@@ -8,6 +8,20 @@ prompt-engineering best practices plus your project's house style.
 claude --plugin-dir /path/to/prompt-optimizer
 ```
 
+## Install from the marketplace
+This repo doubles as a plugin marketplace (`.claude-plugin/marketplace.json`,
+marketplace name `nirav-plugins`). Once it is pushed to a git host:
+```
+# inside a Claude Code session
+/plugin marketplace add <owner>/<repo>      # e.g. nirav/ai-prompt-optimizer
+/plugin install prompt-optimizer@nirav-plugins
+```
+For local testing without a remote, point the marketplace at this directory:
+```
+/plugin marketplace add /path/to/prompt-optimizer
+/plugin install prompt-optimizer@nirav-plugins
+```
+
 ## Commands
 - `/prompt-optimizer:optimize-prompt <prompt>` — rewrite a single/pasted prompt to best practices + house style. Non-destructive.
 - `/prompt-optimizer:scan-prompts [path]` — find prompts embedded in your codebase and improve them (apply on approval).

@@ -199,4 +199,6 @@ distilled. A "refresh from the live doc" capability is **deferred to Phase 3**
   skill with a cached index, implemented 2026-06-28.
 - ~~Project is not yet a git repository~~ — RESOLVED: `git init` done; spec,
   plan, and plugin committed.
-- Future: optional `marketplace.json` for `claude plugin install` distribution.
+- ~~Optional `marketplace.json` for `claude plugin install` distribution~~ —
+  RESOLVED: `.claude-plugin/marketplace.json` added (marketplace `nirav-plugins`,
+  plugin `source: "./"`), implemented 2026-06-28.

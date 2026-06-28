@@ -1,0 +1,17 @@
+{
+  "name": "nirav-plugins",
+  "owner": {
+    "name": "Nirav Sangani"
+  },
+  "description": "Marketplace hosting the prompt-optimizer Claude Code plugin.",
+  "plugins": [
+    {
+      "name": "prompt-optimizer",
+      "source": "./",
+      "description": "Optimize and standardize prompts against Claude's prompt-engineering best practices plus your project's house style.",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": ["prompt-engineering", "optimization", "standardization", "best-practices", "claude"]
+    }
+  ]
+}
