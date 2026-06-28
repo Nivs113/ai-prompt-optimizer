@@ -1,0 +1,9 @@
+{
+  "name": "prompt-optimizer",
+  "displayName": "Prompt Optimizer",
+  "description": "Optimize and standardize prompts against Claude's prompt-engineering best practices plus your project's house style.",
+  "version": "0.1.0",
+  "author": { "name": "Nirav Sangani" },
+  "keywords": ["prompt-engineering", "optimization", "standardization", "best-practices", "claude"],
+  "license": "MIT"
+}
