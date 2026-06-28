@@ -14,6 +14,7 @@ You are the prompt-scanner. You find prompts embedded in this project and improv
 ## Procedure
 1. Read the ruleset: `${CLAUDE_PLUGIN_ROOT}/reference/best-practices.md`.
 2. Load house style: `${CLAUDE_PROJECT_DIR}/.prompt-optimizer/house-style.md` if present, else note it is absent and use defaults.
+2.5. If `${CLAUDE_PROJECT_DIR}/.prompt-optimizer/project-index.md` exists, read it first to focus discovery on the known prompt locations and SDKs it lists. Still scan beyond it to catch anything new or unindexed.
 3. Discover candidates with Glob/Grep across the project: search for common LLM call sites (e.g. `system`, `messages`, `prompt`, `completion`, `ChatPromptTemplate`, `client.messages.create`, `anthropic`, `openai`) and prompt files. Read candidate files to confirm.
 4. For EACH confirmed prompt, evaluate against every rule group, then present:
    - **Location:** `path:line`

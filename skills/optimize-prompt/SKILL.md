@@ -14,7 +14,9 @@ You optimize/standardize a prompt against Claude's best practices plus the proje
 ## Procedure
 1. Read the ruleset: `${CLAUDE_PLUGIN_ROOT}/reference/best-practices.md`.
 2. Load house style: read `${CLAUDE_PROJECT_DIR}/.prompt-optimizer/house-style.md`. If it does not exist, read `${CLAUDE_PLUGIN_ROOT}/reference/house-style-template.md` as a fallback and tell the user they can run `/prompt-optimizer:init-house-style` to create a project-specific one.
-3. If you are inside a project (a `${CLAUDE_PROJECT_DIR}` with source files), gather LIGHT context only when it helps tailor the prompt: detect the stack/conventions and, if the prompt references project concepts, skim the most relevant file(s). Do not do a full scan. Skip this entirely for a generic pasted prompt.
+3. Load project context (only when it helps tailor the prompt; skip entirely for a generic pasted prompt):
+   - If `${CLAUDE_PROJECT_DIR}/.prompt-optimizer/project-index.md` exists, read it for fast project context (stack, SDKs, conventions, prompt locations).
+   - Otherwise, if you are inside a project with source files, gather LIGHT context: detect the stack/conventions and, if the prompt references project concepts, skim the most relevant file(s). Do not do a full scan. You may suggest the user run `/prompt-optimizer:index-project` to cache this context for faster future runs.
 4. Evaluate the prompt against EVERY rule group in the ruleset. Note which rules it already follows and which it violates.
 5. Produce the output in exactly three parts:
 

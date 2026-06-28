@@ -172,7 +172,10 @@ distilled. A "refresh from the live doc" capability is **deferred to Phase 3**
   `reference/house-style-template.md` + `optimize-prompt` skill +
   `init-house-style` skill. Delivers modes A + C.
 - **Phase 2:** `scan-prompts` skill + `prompt-scanner` agent. Delivers mode B.
-- **Phase 3 (optional):** refresh-from-live-doc; deeper project-context analysis.
+- **Phase 3 (implemented 2026-06-28):** `refresh-best-practices` skill (WebFetch +
+  re-distill, preserving rule slugs) and `index-project` skill (cached
+  `.prompt-optimizer/project-index.md` consumed by `optimize-prompt` and
+  `prompt-scanner`).
 
 ## 10. Distribution
 
@@ -190,8 +193,10 @@ distilled. A "refresh from the live doc" capability is **deferred to Phase 3**
 
 ## 12. Open items / future
 
-- Phase 3 "refresh from live doc" mechanism (script vs skill) — undecided,
-  deferred.
-- Optional richer project-context indexing for the scanner — deferred.
-- Project is not yet a git repository; the design doc and code should be placed
-  under version control (`git init`) before/early in implementation.
+- ~~Phase 3 "refresh from live doc" mechanism (script vs skill)~~ — RESOLVED:
+  skill-based (`refresh-best-practices`), implemented 2026-06-28.
+- ~~Richer project-context indexing for the scanner~~ — RESOLVED: `index-project`
+  skill with a cached index, implemented 2026-06-28.
+- ~~Project is not yet a git repository~~ — RESOLVED: `git init` done; spec,
+  plan, and plugin committed.
+- Future: optional `marketplace.json` for `claude plugin install` distribution.

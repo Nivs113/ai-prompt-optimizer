@@ -545,6 +545,38 @@ git commit -m "chore: final validation fixes" || echo "nothing to fix"
 
 ---
 
+## Task 9: Phase 3 — `refresh-best-practices` skill
+
+**Files:**
+- Create: `skills/refresh-best-practices/SKILL.md`
+
+**Interfaces:**
+- Consumes: live source URL via WebFetch; current `reference/best-practices.md`.
+- Produces: regenerated `reference/best-practices.md` preserving the 10-group structure and existing rule slugs.
+
+- [ ] **Step 1:** Create `skills/refresh-best-practices/SKILL.md` — frontmatter `allowed-tools: WebFetch, Read, Write`; procedure: read current ruleset (note slugs) → WebFetch source → re-distill into the same format with today's `Distilled:` date → preserve existing slugs, add/remove only on real change → write back → report added/changed/removed and flag any removed slug still referenced by `optimize-prompt`/`prompt-scanner`.
+- [ ] **Step 2:** Verify: `head -1` is `---`; `grep -q "WebFetch" skills/refresh-best-practices/SKILL.md`.
+- [ ] **Step 3:** Commit.
+
+## Task 10: Phase 3 — `index-project` skill + consumer wiring
+
+**Files:**
+- Create: `skills/index-project/SKILL.md`
+- Modify: `skills/optimize-prompt/SKILL.md` (read index if present, else light-scan)
+- Modify: `agents/prompt-scanner.md` (read index to focus discovery)
+- Modify: `README.md` (document `index-project` + `refresh-best-practices`)
+
+**Interfaces:**
+- Produces: `${CLAUDE_PROJECT_DIR}/.prompt-optimizer/project-index.md` with sections Stack / LLM SDKs / Prompt locations / Observed conventions / Generated.
+- Consumed by: `optimize-prompt` and `prompt-scanner` when present (graceful fallback when absent).
+
+- [ ] **Step 1:** Create `skills/index-project/SKILL.md` — frontmatter `allowed-tools: Read, Glob, Grep, Write`; procedure: detect LLM SDKs, locate prompt files/call sites, infer conventions, write the cached index.
+- [ ] **Step 2:** Edit `optimize-prompt` step 3 to read `.prompt-optimizer/project-index.md` first, fall back to light-scan, and suggest `index-project`.
+- [ ] **Step 3:** Edit `prompt-scanner` to read the index (step 2.5) to focus discovery while still scanning for new prompts.
+- [ ] **Step 4:** Update `README.md` Commands + How-it-works with both Phase 3 commands.
+- [ ] **Step 5:** Verify: `head -1` of `skills/index-project/SKILL.md` is `---`; both consumers contain `project-index.md`.
+- [ ] **Step 6:** `claude plugin validate .` → Validation passed. Commit.
+
 ## Self-Review (completed during planning)
 
 - **Spec coverage:** §2 modes A/C → Task 4; mode B → Task 6; §4 ruleset → Task 2; §5 house style → Tasks 3+5; §7 bundled → Task 2 content; §8 testing → Tasks 7+8; §9 phasing → Tasks 1–5 (Phase 1), Task 6 (Phase 2); §10 distribution → README in Task 7. Phase 3 intentionally omitted.
