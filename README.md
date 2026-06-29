@@ -57,7 +57,7 @@ After installing, do a quick one-time setup per project, then use it day to day.
 /prompt-optimizer:init-house-style
 ```
 
-Writes `.prompt-optimizer/house-style.md`. Open it and fill in your project's tone, required prompt sections, default output format, and forbidden patterns. **Commit this file** — it's a shared team convention.
+Auto-generates a ready-to-use `.prompt-optimizer/house-style.md` by inferring your project's conventions (tone, prompt structure, output format, naming, glossary) from the codebase, docs, and this session — no blank template to fill in. Review the short summary, tweak anything it flagged as an assumption, and **commit the file** as a shared team convention.
 
 **2. Index the project** *(one-time; re-run when the stack changes)*
 
