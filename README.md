@@ -47,6 +47,46 @@ A short paragraph followed by a bullet list of action items (if any).
 /plugin install prompt-optimizer@nirav-plugins
 ```
 
+## Getting started in a project
+
+After installing, do a quick one-time setup per project, then use it day to day.
+
+**1. Create your house style** *(one-time)*
+
+```
+/prompt-optimizer:init-house-style
+```
+
+Writes `.prompt-optimizer/house-style.md`. Open it and fill in your project's tone, required prompt sections, default output format, and forbidden patterns. **Commit this file** — it's a shared team convention.
+
+**2. Index the project** *(one-time; re-run when the stack changes)*
+
+```
+/prompt-optimizer:index-project
+```
+
+Caches `.prompt-optimizer/project-index.md` (stack, LLM SDKs, prompt locations). The optimizer and scanner read it automatically for faster, more tailored suggestions. It's a regenerable cache — safe to `.gitignore`.
+
+**3. Use it** *(day to day)*
+
+```
+# polish a single prompt
+/prompt-optimizer:optimize-prompt write a system prompt for a support bot
+
+# audit & standardize prompts across the codebase — you approve each edit
+/prompt-optimizer:scan-prompts
+```
+
+**4. Keep the rules current** *(occasional)*
+
+```
+/prompt-optimizer:refresh-best-practices
+```
+
+Re-fetches Claude's live docs and regenerates the bundled ruleset.
+
+> Steps 1–2 are optional: the plugin still works without them (it falls back to sensible defaults and a quick live scan), but they make results sharper and consistent with your project.
+
 ## Commands
 
 | Command | What it does |
