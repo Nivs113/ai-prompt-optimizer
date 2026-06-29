@@ -47,12 +47,6 @@ A short paragraph followed by a bullet list of action items (if any).
 /plugin install prompt-optimizer@nirav-plugins
 ```
 
-Or load it for a single session without installing:
-
-```
-claude --plugin-dir /path/to/ai-prompt-optimizer
-```
-
 ## Commands
 
 | Command | What it does |
