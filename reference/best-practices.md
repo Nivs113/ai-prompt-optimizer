@@ -1,7 +1,7 @@
 # Claude Prompt-Engineering Best Practices (distilled)
 
 Source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices
-Distilled: 2026-06-28. Applies to current Claude models (Fable 5, Opus 4.8, Sonnet 4.6, Haiku 4.5). Model-specific notes are labelled.
+Distilled: 2026-06-28. Applies to current Claude models (Fable 5, Mythos 5, Opus 4.8, Sonnet 4.6, Haiku 4.5). Model-specific notes are labelled.
 
 When optimizing a prompt, evaluate it against every rule below. For each change, cite the rule name in the rationale.
 
@@ -25,6 +25,7 @@ When optimizing a prompt, evaluate it against every rule below. For each change,
 
 ## 5. Role / system prompt
 - **set-role**: Set a role in the system prompt to focus tone and behavior; even one sentence helps.
+- **model-self-knowledge**: If you need Claude to identify itself correctly in your app, state it in the system prompt (e.g. "The assistant is Claude, created by Anthropic. The current model is Claude Opus 4.8.").
 
 ## 6. Long-context handling (20k+ tokens)
 - **data-on-top**: Put long documents/inputs near the top, above the query and instructions.
@@ -33,22 +34,26 @@ When optimizing a prompt, evaluate it against every rule below. For each change,
 - **ground-in-quotes**: For long-document tasks, ask Claude to extract relevant quotes first (in `<quotes>` tags) before answering.
 
 ## 7. Output & formatting
+- **verbosity-style**: Claude's latest models are concise and direct by default; if you need summaries after tool calls or more visible reasoning, request them explicitly.
 - **say-what-to-do**: Tell Claude what to do, not what to avoid ("write flowing prose" beats "don't use markdown").
 - **xml-format-indicators**: Use tags like `<smoothly_flowing_prose_paragraphs>` to mark desired output shape.
 - **match-prompt-style**: Match the prompt's own formatting to the desired output style.
 - **explicit-format-guidance**: For strict formatting, give detailed explicit guidance.
-- **prefer-structured-outputs**: Don't rely on prefill (deprecated on 4.6+); use Structured Outputs / tool enums for schemas and "respond without preamble" to drop preambles.
+- **latex-default**: Claude's latest models default to LaTeX for math expressions; instruct plain text (e.g. "/" for division, "^" for exponents) if that is not desired.
+- **doc-creation**: For document/presentation creation, explicitly request design elements, visual hierarchy, and animations to get best results.
+- **prefer-structured-outputs**: Prefill on the last assistant turn returns a 400 error on Claude 4.6+, Fable 5, and Mythos 5; use Structured Outputs or tool enums for schemas, and "respond without preamble" (or XML output tags) to drop introductory text. [4.6+]
 
 ## 8. Tool use
 - **explicit-action**: To make Claude act (not just suggest), use imperative phrasing ("Change this function", not "Can you suggest changes").
+- **proactive-action**: Add a `<default_to_action>` block to the system prompt for Claude to implement changes by default; use `<do_not_act_before_instructions>` for more conservative behavior that only acts on explicit request.
 - **avoid-over-prompting**: Don't use "CRITICAL/MUST" pressure; modern models overtrigger. Use normal phrasing ("Use this tool when...").
 - **parallel-tool-calls**: Encourage parallel independent tool calls; require sequential only for dependent calls.
 
 ## 9. Thinking & reasoning
 - **calibrate-thoroughness**: Replace blanket "always use X" with targeted "use X when it helps"; remove anti-laziness over-prompting.
-- **adaptive-thinking**: Prefer adaptive thinking; control depth via `effort`, not `budget_tokens` (deprecated/400 on newer models).
+- **adaptive-thinking**: Prefer adaptive thinking (`thinking: {type: "adaptive"}`); control depth via `effort`, not `budget_tokens` (deprecated on Opus 4.6/Sonnet 4.6; returns 400 on Opus 4.7+ and Fable 5/Mythos 5). On Fable 5/Mythos 5, thinking is always on.
 - **self-check**: Ask Claude to verify its answer against criteria before finishing.
-- **cot-fallback-tags**: When thinking is off, request step-by-step reasoning using `<thinking>` and `<answer>` tags. Note: on Opus 4.5 with thinking off, prefer "consider/evaluate/reason through" over "think".
+- **cot-fallback-tags**: When thinking is off, request step-by-step reasoning using `<thinking>` and `<answer>` tags. On Opus 4.5 with thinking off, prefer "consider/evaluate/reason through" over "think".
 
 ## 10. Agentic safety & quality
 - **confirm-destructive**: Instruct confirmation before destructive/irreversible/shared-system actions; never bypass safety checks as a shortcut.
@@ -56,3 +61,13 @@ When optimizing a prompt, evaluate it against every rule below. For each change,
 - **no-test-hardcoding**: Solve the general problem, not just the test cases; report bad/infeasible tests instead of working around them.
 - **investigate-before-answering**: Never speculate about unopened code; read referenced files before answering.
 - **state-tracking** (long-horizon): Use structured files (e.g. `tests.json`) for state, freeform notes for progress, git for checkpoints; emphasize incremental progress.
+- **context-awareness**: Claude Sonnet 4.6/4.5 and Haiku 4.5 track their remaining context window; for compacting harnesses tell Claude that context will be auto-compacted so it does not stop tasks early. [Sonnet 4.6/4.5, Haiku 4.5]
+- **multi-window-workflow**: For tasks spanning multiple context windows, use the first window to set up tests and scripts, then iterate with a todo-list in subsequent windows; let Claude discover state from the filesystem rather than relying solely on compaction.
+- **research-structured**: For complex research, ask Claude to develop competing hypotheses, track confidence levels in progress notes, and update a structured hypothesis/research file iteratively.
+- **subagent-orchestration**: Claude Opus 4.6+ natively spawns subagents; watch for overuse (excessive spawning for simple grep-level tasks) and guide when to delegate vs. work directly. [Opus 4.6+]
+- **prompt-chaining**: Use explicit prompt chaining (sequential API calls) when you need to inspect, log, or branch at intermediate outputs; the canonical pattern is generate → review → refine.
+- **reduce-file-creation**: If Claude creates temporary files during iteration, instruct it to clean them up at the end of the task.
+
+## 11. Capability-specific
+- **vision-crop-tool**: Provide Claude a crop/zoom tool to boost performance on image tasks that require focusing on specific regions; this consistently improves results on multi-image evaluations. [Opus 4.5/4.6]
+- **frontend-aesthetics**: Without guidance Claude produces generic "AI slop" frontends; use a `<frontend_aesthetics>` system prompt block specifying distinctive typography, cohesive color with sharp accents, high-impact animations, and atmospheric backgrounds. [Opus 4.5/4.6]
